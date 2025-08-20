@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Your ContractNest Lifetime Deal - Pre-Launch Access</title>
+    <meta name="description" content="Join the exclusive Early Adopter program for ContractNest. Secure your lifetime pricing before launch - ₹1,000/month forever vs ₹4,000 regular pricing.">
+    
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f1f4f8 0%, #e0e3e7 100%);
+            color: #141518;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(20, 21, 24, 0.1);
+            overflow: hidden;
+            border: 1px solid rgba(248, 59, 70, 0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #f83b46 0%, #ff6a73 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.1) 2px,
+                rgba(255, 255, 255, 0.1) 4px
+            );
+            animation: shimmer 3s linear infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header .subtitle {
+            font-size: 16px;
+            opacity: 0.95;
+            font-weight: 500;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .urgency-badge {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 20px auto 0;
+            display: inline-block;
+            position: relative;
+            z-index: 2;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .value-props {
+            margin-bottom: 30px;
+        }
+        
+        .value-prop {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: rgba(248, 59, 70, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid #f83b46;
+        }
+        
+        .value-prop .icon {
+            width: 24px;
+            height: 24px;
+            background: #f83b46;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .value-prop .text {
+            font-weight: 600;
+            color: #141518;
+            flex: 1;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #141518;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e3e7;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #ffffff;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #f83b46;
+            box-shadow: 0 0 0 4px rgba(248, 59, 70, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #f83b46 0%, #ff6a73 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(248, 59, 70, 0.3);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .trust-signals {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e3e7;
+        }
+        
+        .trust-signals h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #141518;
+            margin-bottom: 15px;
+        }
+        
+        .trust-badges {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .trust-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+        }
+        
+        .trust-badge .badge-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #18aa99 0%, #16857b 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+        
+        .trust-badge .badge-text {
+            font-size: 12px;
+            color: #677681;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #f1f4f8;
+            color: #677681;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #f83b46;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .savings-highlight {
+            background: linear-gradient(135deg, #18aa99 0%, #16857b 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .savings-highlight h3 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        
+        .savings-highlight p {
+            opacity: 0.95;
+            font-weight: 500;
+        }
+        
+        .required {
+            color: #f83b46;
+        }
+        
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .success-message {
+            background: #ecfdf5;
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .success-message h4 {
+            color: #065f46;
+            margin-bottom: 8px;
+        }
+        
+        .success-message p {
+            color: #047857;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .success-message ul {
+            color: #047857;
+            font-size: 13px;
+            text-align: left;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .logo {
+                font-size: 28px;
+            }
+            
+            .trust-badges {
+                justify-content: center;
+            }
+        }
+        
+        /* Loading state */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .submit-btn.loading::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div class="logo">ContractNest</div>
+                <h1>Secure Your Lifetime Deal</h1>
+                <p class="subtitle">Early Adopter Pre-Launch Access</p>
+                <div class="urgency-badge">🚀 Limited Time Offer</div>
+            </div>
+            
+            <div class="content">
+                <div class="savings-highlight">
+                    <h3>Save ₹72,000+ Annually</h3>
+                    <p>Early Adopters: ₹1,000/month FOREVER</p>
+                </div>
+                
+                <div class="value-props">
+                    <div class="value-prop">
+                        <div class="icon">🎯</div>
+                        <div class="text">Priority Access at Launch (September 2024)</div>
+                    </div>
+                    <div class="value-prop">
+                        <div class="icon">⚡</div>
+                        <div class="text">Exclusive Pre-Launch Pricing Lock</div>
+                    </div>
+                    <div class="value-prop">
+                        <div class="icon">🤖</div>
+                        <div class="text">70% OFF AI Automation (December 2024)</div>
+                    </div>
+                    <div class="value-prop">
+                        <div class="icon">📧</div>
+                        <div class="text">Instant Info Pack + Regular Updates</div>
+                    </div>
+                </div>
+                
+                <form id="demoForm">
+                    <div class="form-group">
+                        <label for="name">Full Name <span class="required">*</span></label>
+                        <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company">Company Name <span class="required">*</span></label>
+                        <input type="text" id="company" name="company" required placeholder="Enter your company name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" required placeholder="+91 XXXXX XXXXX">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Business Email <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required placeholder="your@company.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="industry">Industry</label>
+                        <select id="industry" name="industry">
+                            <option value="">Select your industry</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="pharmaceutical">Pharmaceutical</option>
+                            <option value="consulting">Consulting</option>
+                            <option value="service_agencies">Service Agencies</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        🚀 Secure My Lifetime Deal
+                    </button>
+                </form>
+                
+                <div id="messageContainer"></div>
+                
+                <div class="trust-signals">
+                    <h3>Why Choose ContractNest?</h3>
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <div class="badge-icon">⚡</div>
+                            <div class="badge-text">Setup in<br>Minutes</div>
+                        </div>
+                        <div class="trust-badge">
+                            <div class="badge-icon">🔒</div>
+                            <div class="badge-text">Enterprise<br>Security</div>
+                        </div>
+                        <div class="trust-badge">
+                            <div class="badge-icon">📞</div>
+                            <div class="badge-text">24/7<br>Support</div>
+                        </div>
+                        <div class="trust-badge">
+                            <div class="badge-icon">✓</div>
+                            <div class="badge-text">No Risk<br>Trial</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Questions? Contact us at <a href="mailto:charan@vikuna.io">charan@vikuna.io</a> or <a href="tel:+919949701175">+91-9949701175</a>
+        </div>
+    </div>
+
+    <script>
+        // REPLACE THESE WITH YOUR ACTUAL SUPABASE CREDENTIALS
+        const SUPABASE_URL = 'https://uwyqhzotluikawcboldr.supabase.co'; // e.g., 'https://abcdefgh.supabase.co'
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3eXFoem90bHVpa2F3Y2JvbGRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4MjU1NDcsImV4cCI6MjA2MDQwMTU0N30.YB4k5XXubv8q4eMv0__VzmBX-B615qLu_ejHgpw_bIQ'; // Your anon/public key
+        
+        // Initialize Supabase client
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Form submission handler
+        document.getElementById('demoForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const messageContainer = document.getElementById('messageContainer');
+            
+            // Clear previous messages
+            messageContainer.innerHTML = '';
+            
+            // Show loading state
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = 'Securing Your Deal...';
+            
+            // Get form data
+            const formData = new FormData(this);
+            const leadData = {
+                name: formData.get('name'),
+                company: formData.get('company'),
+                phone: formData.get('phone'),
+                email: formData.get('email'),
+                industry: formData.get('industry') || null,
+                source: 'expo_qr'
+            };
+            
+            try {
+                // Insert data into Supabase
+                const { data, error } = await supabase
+                    .from('leads')
+                    .insert([leadData])
+                    .select();
+                
+                if (error) {
+                    throw error;
+                }
+                
+                // Success - show success message
+                submitBtn.innerHTML = '✓ Lifetime Deal Secured!';
+                submitBtn.style.background = 'linear-gradient(135deg, #16857b 0%, #18aa99 100%)';
+                
+                // Show success message
+                messageContainer.innerHTML = `
+                    <div class="success-message">
+                        <h4>🎉 Welcome to the Early Adopter Program!</h4>
+                        <p>Check your email for:</p>
+                        <ul>
+                            <li>📋 ContractNest Info Pack (PDF)</li>
+                            <li>📅 Launch timeline & updates</li>
+                            <li>🎯 Exclusive early adopter benefits</li>
+                            <li>📞 Personal onboarding call details</li>
+                        </ul>
+                    </div>
+                `;
+                
+                // Reset form
+                this.reset();
+                
+                // Track success
+                console.log('Lead captured successfully:', data);
+                
+                // Reset button after 5 seconds
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.style.background = 'linear-gradient(135deg, #f83b46 0%, #ff6a73 100%)';
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                }, 5000);
+                
+            } catch (error) {
+                console.error('Error saving lead:', error);
+                
+                // Show error message
+                messageContainer.innerHTML = `
+                    <div class="error-message">
+                        ❌ Something went wrong. Please try again or contact us directly at charan@vikuna.io
+                    </div>
+                `;
+                
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.style.background = 'linear-gradient(135deg, #f83b46 0%, #ff6a73 100%)';
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+            }
+        });
+        
+        // Phone number formatting
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.startsWith('91')) {
+                value = value.substring(2);
+            }
+            if (value.length > 0 && !value.startsWith('+91')) {
+                value = '+91 ' + value;
+            }
+            e.target.value = value;
+        });
+        
+        // Analytics tracking
+        function trackEvent(action, label) {
+            console.log('Analytics:', action, label);
+            // Add your analytics tracking here (Google Analytics, etc.)
+        }
+        
+        // Track form interactions
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('focus', () => {
+                trackEvent('form_field_focus', element.name);
+            });
+        });
+        
+        // Track page load
+        trackEvent('page_view', 'expo_landing');
+        
+        // Check if Supabase is properly configured
+        if (SUPABASE_URL === 'YOUR_SUPABASE_URL_HERE' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY_HERE') {
+            console.warn('⚠️ Please update the Supabase credentials in the script section');
+        }
+    </script>
+</body>
+</html>
