@@ -743,10 +743,10 @@
 
     <script>
         // REPLACE THESE WITH YOUR ACTUAL SUPABASE CREDENTIALS
-        const SUPABASE_URL = 'https://uwyqhzotluikawcboldr.supabase.co'; // e.g., 'https://abcdefgh.supabase.co'
+      const SUPABASE_URL = 'https://uwyqhzotluikawcboldr.supabase.co'; // e.g., 'https://abcdefgh.supabase.co'
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3eXFoem90bHVpa2F3Y2JvbGRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4MjU1NDcsImV4cCI6MjA2MDQwMTU0N30.YB4k5XXubv8q4eMv0__VzmBX-B615qLu_ejHgpw_bIQ'; 
 
-        
+       
         
         // Check if Supabase credentials are properly configured
         if (SUPABASE_URL === 'YOUR_SUPABASE_URL_HERE' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY_HERE') {
@@ -851,7 +851,16 @@
                 
                 console.log('Attempting to send email to:', leadData.email);
                 
+                // Step 2: Send welcome email
+                submitBtn.innerHTML = 'Sending Welcome Email...';
+                
+                console.log('Attempting to send email to:', leadData.email);
+                console.log('Edge function URL:', `${SUPABASE_URL}/functions/v1/send-welcome-email`);
+                
                 try {
+                    // Test if edge function exists first
+                    console.log('Testing edge function availability...');
+                    
                     const emailResponse = await fetch(`${SUPABASE_URL}/functions/v1/send-welcome-email`, {
                         method: 'POST',
                         headers: {
@@ -881,21 +890,33 @@
                     } else {
                         // Try to get error details
                         const errorText = await emailResponse.text();
-                        console.error('Email API error:', errorText);
+                        console.error('Email API error response:', errorText);
+                        console.error('Email API status:', emailResponse.status);
                         
                         messageContainer.innerHTML = `
                             <div style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
-                                <p style="margin: 0; color: #856404;">⚠️ <strong>Note:</strong> Your data was saved, but email delivery is delayed. You'll receive it shortly!</p>
+                                <p style="margin: 0; color: #856404;">⚠️ <strong>Email issue (Status: ${emailResponse.status}):</strong> Your data was saved, but email delivery needs attention. You'll receive it shortly!</p>
                             </div>
                         `;
                     }
                 } catch (emailError) {
-                    console.error('Email sending error:', emailError);
-                    messageContainer.innerHTML = `
-                        <div style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
-                            <p style="margin: 0; color: #856404;">⚠️ <strong>CORS Error:</strong> Email system needs configuration. Your data is saved safely!</p>
-                        </div>
-                    `;
+                    console.error('Email sending error details:', emailError);
+                    console.error('Error name:', emailError.name);
+                    console.error('Error message:', emailError.message);
+                    
+                    if (emailError.message.includes('Failed to fetch')) {
+                        messageContainer.innerHTML = `
+                            <div style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                                <p style="margin: 0; color: #856404;">⚠️ <strong>Edge Function Not Available:</strong> Your data is saved! Email system needs deployment. We'll send welcome email manually.</p>
+                            </div>
+                        `;
+                    } else {
+                        messageContainer.innerHTML = `
+                            <div style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                                <p style="margin: 0; color: #856404;">⚠️ <strong>Email Error:</strong> Your data is saved safely! Email system needs configuration.</p>
+                            </div>
+                        `;
+                    }
                 }
                 
                 // Success - show success message
@@ -917,7 +938,7 @@
                         </ul>
                         <p style="margin-top: 15px; color: #047857; font-weight: 600;">💡 Add onboarding@vikuna.io to your contacts!</p>
                         <div style="background: #e0f2fe; border: 1px solid #0288d1; border-radius: 6px; padding: 10px; margin-top: 15px;">
-                            <p style="margin: 0; color: #01579b; font-size: 14px;"><strong>Selected Industry:</strong> ${selectedIndustryCard ? selectedIndustryCard.querySelector('.industry-name').textContent : 'Not selected'}</p>
+                            <p style="margin: 0; color: #01579b; font-size: 14px;"><strong>Selected Industry:</strong> ${industryValue || 'Not selected'}</p>
                         </div>
                     </div>
                 `;
