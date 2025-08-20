@@ -744,7 +744,6 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3eXFoem90bHVpa2F3Y2JvbGRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4MjU1NDcsImV4cCI6MjA2MDQwMTU0N30.YB4k5XXubv8q4eMv0__VzmBX-B615qLu_ejHgpw_bIQ'; 
 
        
-        
         // Check if Supabase credentials are properly configured
         if (SUPABASE_URL === 'YOUR_SUPABASE_URL_HERE' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY_HERE') {
             console.error('⚠️ Please update the Supabase credentials in the script section');
@@ -772,14 +771,22 @@
             
             // Get form data
             const formData = new FormData(this);
+            
+            // Get industry from global variable (more reliable)
+            const industryValue = selectedIndustry || document.getElementById('industry').value || null;
+            
             const leadData = {
                 name: formData.get('name').trim(),
                 company: formData.get('company').trim(),
                 phone: formData.get('phone').trim(),
                 email: formData.get('email').trim(),
-                industry: formData.get('industry') || null,
+                industry: industryValue,
                 source: 'expo_qr'
             };
+            
+            // Log data being sent for debugging
+            console.log('Form data being submitted:', leadData);
+            console.log('Selected industry:', industryValue);
             
             // Validate all fields
             let hasErrors = false;
@@ -835,6 +842,8 @@
                 // Step 2: Send welcome email
                 submitBtn.innerHTML = 'Sending Welcome Email...';
                 
+                console.log('Attempting to send email to:', leadData.email);
+                
                 try {
                     const emailResponse = await fetch(`${SUPABASE_URL}/functions/v1/send-welcome-email`, {
                         method: 'POST',
@@ -849,17 +858,37 @@
                         })
                     });
                     
-                    const emailResult = await emailResponse.json();
+                    console.log('Email API response status:', emailResponse.status);
+                    console.log('Email API response headers:', emailResponse.headers);
                     
-                    if (!emailResponse.ok) {
-                        console.warn('Email sending failed:', emailResult);
-                        // Continue anyway - lead was saved
+                    if (emailResponse.status === 200) {
+                        const emailResult = await emailResponse.json();
+                        console.log('Email sent successfully:', emailResult);
+                        
+                        // Show success indicator
+                        messageContainer.innerHTML = `
+                            <div style="background: #d4edda; border: 1px solid #c3e6cb; border-radius: 8px; padding: 12px; margin-bottom: 15px;">
+                                <p style="margin: 0; color: #155724;">✅ <strong>Email sent successfully!</strong> Check your inbox.</p>
+                            </div>
+                        `;
                     } else {
-                        console.log('Welcome email sent successfully:', emailResult);
+                        // Try to get error details
+                        const errorText = await emailResponse.text();
+                        console.error('Email API error:', errorText);
+                        
+                        messageContainer.innerHTML = `
+                            <div style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                                <p style="margin: 0; color: #856404;">⚠️ <strong>Note:</strong> Your data was saved, but email delivery is delayed. You'll receive it shortly!</p>
+                            </div>
+                        `;
                     }
                 } catch (emailError) {
-                    console.warn('Email sending error:', emailError);
-                    // Continue anyway - lead was saved
+                    console.error('Email sending error:', emailError);
+                    messageContainer.innerHTML = `
+                        <div style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                            <p style="margin: 0; color: #856404;">⚠️ <strong>CORS Error:</strong> Email system needs configuration. Your data is saved safely!</p>
+                        </div>
+                    `;
                 }
                 
                 // Success - show success message
@@ -867,7 +896,8 @@
                 submitBtn.style.background = 'linear-gradient(135deg, #16857b 0%, #18aa99 100%)';
                 
                 // Show success message
-                messageContainer.innerHTML = `
+                const currentSuccessMessage = messageContainer.innerHTML;
+                messageContainer.innerHTML = currentSuccessMessage + `
                     <div class="success-message">
                         <h4>🎉 Welcome to the Early Adopter Program!</h4>
                         <p>Your lifetime deal is secured! Check your email for:</p>
@@ -879,6 +909,9 @@
                             <li>📞 Personal onboarding call details</li>
                         </ul>
                         <p style="margin-top: 15px; color: #047857; font-weight: 600;">💡 Add onboarding@vikuna.io to your contacts!</p>
+                        <div style="background: #e0f2fe; border: 1px solid #0288d1; border-radius: 6px; padding: 10px; margin-top: 15px;">
+                            <p style="margin: 0; color: #01579b; font-size: 14px;"><strong>Selected Industry:</strong> ${selectedIndustryCard ? selectedIndustryCard.querySelector('.industry-name').textContent : 'Not selected'}</p>
+                        </div>
                     </div>
                 `;
                 
