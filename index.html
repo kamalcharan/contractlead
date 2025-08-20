@@ -928,19 +928,7 @@
                     console.error('Error name:', emailError.name);
                     console.error('Error message:', emailError.message);
                     
-                    if (emailError.message.includes('Failed to fetch')) {
-                        messageContainer.innerHTML = `
-                            <div style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
-                                <p style="margin: 0; color: #856404;">⚠️ <strong></p>
-                            </div>
-                        `;
-                    } else {
-                        messageContainer.innerHTML = `
-                            <div style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
-                                <p style="margin: 0; color: #856404;">⚠️ <strong>Email Error:</strong> Your data is saved safely! Email system needs configuration.</p>
-                            </div>
-                        `;
-                    }
+                    
                 }
                 
                 // Success - show success message
