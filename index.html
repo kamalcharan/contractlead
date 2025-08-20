@@ -343,16 +343,19 @@
             position: relative;
         }
         
-        .industry-card:hover {
+        .industry-card:hover:not(.selected) {
             border-color: #f83b46;
             box-shadow: 0 2px 8px rgba(248, 59, 70, 0.1);
             transform: translateY(-1px);
         }
         
         .industry-card.selected {
-            border-color: #f83b46;
-            background: rgba(248, 59, 70, 0.05);
-            box-shadow: 0 0 0 3px rgba(248, 59, 70, 0.1);
+            border-color: #f83b46 !important;
+            background: rgba(248, 59, 70, 0.05) !important;
+            box-shadow: 0 0 0 3px rgba(248, 59, 70, 0.1) !important;
+            transform: none !important;
+            outline: 2px solid #f83b46 !important;
+            outline-offset: -2px !important;
         }
         
         .industry-card.selected::after {
@@ -744,6 +747,7 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3eXFoem90bHVpa2F3Y2JvbGRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4MjU1NDcsImV4cCI6MjA2MDQwMTU0N30.YB4k5XXubv8q4eMv0__VzmBX-B615qLu_ejHgpw_bIQ'; 
 
         
+        
         // Check if Supabase credentials are properly configured
         if (SUPABASE_URL === 'YOUR_SUPABASE_URL_HERE' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY_HERE') {
             console.error('⚠️ Please update the Supabase credentials in the script section');
@@ -1055,6 +1059,14 @@
                 trackEvent('form_field_focus', element.name);
             });
         });
+        
+        // Test function - you can call this in console
+        window.testIndustrySelection = function() {
+            const selected = document.querySelector('.industry-card.selected');
+            console.log('Currently selected card:', selected ? selected.getAttribute('data-value') : 'None');
+            console.log('Hidden input value:', document.getElementById('industry').value);
+            console.log('Global selectedIndustry variable:', selectedIndustry);
+        };
         
         // Track page load
         trackEvent('page_view', 'expo_landing');
